@@ -33,10 +33,22 @@
             <p>Controle quem contribui com o acervo do museu.</p>
         </a>
 
+        <a href="/usuario" class="card">
+            <div class="card-icon">👥</div>
+            <h3>Gerenciar Usuários</h3>
+            <p>Cadastro de leitores, pesquisadores e visitantes.</p>
+        </a>
+
         <a href="/livro" class="card">
             <div class="card-icon">📚</div>
             <h3>Biblioteca</h3>
-            <p>Catálogo de livros e revistas. <br> (Em desenvolvimento)</p>
+            <p>Catálogo de livros e revistas do acervo.</p>
+        </a>
+
+        <a href="/emprestimo" class="card">
+            <div class="card-icon">📅</div>
+            <h3>Empréstimos</h3>
+            <p>Controle de retiradas e devoluções de livros.</p>
         </a>
 
         <a href="/acervo" class="card disabled">
@@ -47,7 +59,6 @@
 
     </div>
 </div>
-
 
 <style>
     .dashboard-grid {
@@ -68,6 +79,10 @@
         color: var(--text-color);
         transition: transform 0.2s, box-shadow 0.2s;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .card:hover {
@@ -92,14 +107,18 @@
     }
 
     /* Estilo para módulos ainda não prontos */
-        .card.disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            background-color: #f9f9f9;
-        }
-        .card.disabled:hover {
-            transform: none;
-            box-shadow: none;
-            border-color: #ddd;
-        }
+    .card.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background-color: #f9f9f9;
+        pointer-events: none; /* Impede o clique */
+    }
+    .card.disabled:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: #ddd;
+    }
 </style>
+
+</body>
+</html>

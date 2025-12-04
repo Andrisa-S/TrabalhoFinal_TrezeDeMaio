@@ -368,9 +368,36 @@ footer p {
 }
 
 .card-actions {
-    margin-top: auto; /* Empurra para o rodapé do card */
+    margin-top: auto;
     padding-top: 15px;
     border-top: 1px solid #f0f0f0;
     display: flex;
     justify-content: space-between;
+}
+
+/* =========================================
+    ÍCONE DE PERFIL/LOGIN
+========================================= */
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.user-profile a {
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.user-profile a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--secondary-color);
+}
+
+.user-profile svg {
+    stroke: currentColor;
 }

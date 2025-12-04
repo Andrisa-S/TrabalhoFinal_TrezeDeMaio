@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecalho}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container">
+    <h2>Registrar Novo Empréstimo</h2>
+
+    <form th:action="@{/emprestimo/salvar}" th:object="${emprestimo}" method="post">
+
+        <div class="form-group">
+            <label>Quem está retirando?</label>
+            <select th:field="*{usuario}" required>
+                <option value="">Selecione o Usuário...</option>
+                <option th:each="u : ${listaUsuarios}"
+                        th:value="${u.id}"
+                        th:text="${u.nome} + ' (' + ${u.tipo} + ')'"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Qual livro será emprestado?</label>
+            <select th:field="*{livro}" required>
+                <option value="">Selecione o Livro...</option>
+                <option th:each="l : ${listaLivros}"
+                        th:value="${l.id}"
+                        th:text="${l.titulo}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Data de Retirada:</label>
+            <input type="date" th:field="*{dataRetirada}" readonly style="background-color: #eee;"/>
+            <small>A data é preenchida automaticamente.</small>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <button type="submit" class="btn-salvar">Confirmar Empréstimo</button>
+            <a href="/emprestimo" class="btn-cancelar">Cancelar</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

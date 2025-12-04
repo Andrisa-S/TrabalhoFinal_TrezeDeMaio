@@ -17,7 +17,7 @@ public class AutorController {
     private AutorRepository autorRepository;
 
     @GetMapping
-    public String listarAutor(@RequestParam(value = "busca", required = false) String busca, Model model) {
+    public String listar(@RequestParam(value = "busca", required = false) String busca, Model model) {
         if (busca != null && !busca.isEmpty()){
             model.addAttribute("autores", autorRepository.findByNomeAutorContainingIgnoreCase(busca));
         }
@@ -28,19 +28,19 @@ public class AutorController {
     }
 
     @GetMapping("/novo")
-    public String novoAutor(Model model) {
+    public String novo(Model model) {
         model.addAttribute("autor", new Autor());
         return "autor/formulario";
     }
 
     @PostMapping("/salvar")
-    public String salvarAutor(Autor autor) {
+    public String salvar(Autor autor) {
         autorRepository.save(autor);
         return  "redirect:/autor";
     }
 
     @GetMapping("/editar/{id}")
-    public String editarAutor(@PathVariable Long id, Model model) {
+    public String editar(@PathVariable Long id, Model model) {
         Optional<Autor> autor = autorRepository.findById(id);
         if (autor.isPresent()) {
             model.addAttribute("autor", autor.get());
@@ -50,7 +50,7 @@ public class AutorController {
     }
 
     @GetMapping("/excluir/{id}")
-    public String excluirAutor(@PathVariable Long id) {
+    public String excluir(@PathVariable Long id) {
         autorRepository.deleteById(id);
         return "redirect:/autor";
     }

@@ -16,7 +16,7 @@ public class DoadorController {
     private DoadorRepository doadorRepository;
 
     @GetMapping
-    public String listarDoador(@RequestParam(value = "busca", required = false) String busca, Model model) {
+    public String listar(@RequestParam(value = "busca", required = false) String busca, Model model) {
         if (busca != null && !busca.isEmpty()) {
             model.addAttribute("doadores", doadorRepository.findByNomeContainingIgnoreCase(busca));
         } else {
@@ -26,19 +26,19 @@ public class DoadorController {
     }
 
     @GetMapping("/novo")
-    public String novoDoador(Model model) {
+    public String novo(Model model) {
         model.addAttribute("doador", new Doador());
         return "doador/formulario";
     }
 
     @PostMapping("/salvar")
-    public String salvarDoador(Doador doador) {
+    public String salvar(Doador doador) {
         doadorRepository.save(doador);
         return "redirect:/doador";
     }
 
     @GetMapping("/editar/{id}")
-    public String editarDoador(@PathVariable("id") Long id, Model model) {
+    public String editar(@PathVariable("id") Long id, Model model) {
         Optional<Doador> doador = doadorRepository.findById(id);
 
         if (doador.isPresent()) {
@@ -50,7 +50,7 @@ public class DoadorController {
     }
 
     @GetMapping("/excluir/{id}")
-    public String excluirDoador(@PathVariable("id") Long id) {
+    public String excluir(@PathVariable("id") Long id) {
         doadorRepository.deleteById(id);
         return "redirect:/doador";
     }

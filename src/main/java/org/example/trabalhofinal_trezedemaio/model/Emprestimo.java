@@ -11,6 +11,7 @@ public class Emprestimo {
     private Long id;
 
     private LocalDate dataRetirada = LocalDate.now();
+    private LocalDate dataPrevista;
     private LocalDate dataDevolucao;
 
     @ManyToOne
@@ -28,6 +29,10 @@ public class Emprestimo {
     public LocalDate getDataRetirada() {return dataRetirada;}
 
     public void setDataRetirada(LocalDate dataRetirada) {this.dataRetirada = dataRetirada;}
+
+    public LocalDate getDataPrevista() { return dataPrevista; }
+
+    public void setDataPrevista(LocalDate dataPrevista) { this.dataPrevista = dataPrevista; }
 
     public LocalDate getDataDevolucao() {return dataDevolucao;}
 
