@@ -1,3 +1,6 @@
+/* =========================================
+   VARIÁVEIS E CORES (TEMA MUSEU)
+   ========================================= */
 :root {
     --primary-color: #8B4513;
     --secondary-color: #CD853F;
@@ -7,12 +10,87 @@
     --hover-color: #A0522D;
 }
 
+/* =========================================
+   CONFIGURAÇÕES GERAIS E LAYOUT (STICKY FOOTER)
+   ========================================= */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Georgia', 'Times New Roman', serif;
     background-color: var(--background-color);
     color: var(--text-color);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    max-width: 900px;
+    width: 100%;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+
+    flex: 1;
+}
+
+/* =========================================
+   CABEÇALHO E NAVEGAÇÃO (NAVBAR)
+   ========================================= */
+nav {
+    background-color: var(--primary-color);
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar-content {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.brand {
+    color: var(--white);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.brand a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+.brand a:hover {
+    opacity: 0.9;
+}
+
+.menu {
+    list-style: none;
     margin: 0;
     padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.menu a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.menu a:hover {
+    color: var(--secondary-color);
 }
 
 header {
@@ -30,61 +108,9 @@ header h1 {
     letter-spacing: 1px;
 }
 
-.container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: var(--white);
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.05);
-}
-
-.btn-novo {
-    display: inline-block;
-    background-color: var(--secondary-color);
-    color: var(--white);
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    font-family: sans-serif;
-    transition: background 0.3s;
-}
-
-.btn-novo:hover {
-    background-color: var(--hover-color);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-thead {
-    background-color: var(--primary-color);
-    color: var(--white);
-}
-
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-td {
-    font-family: 'Arial', sans-serif;
-    font-size: 0.95rem;
-}
-
+/* =========================================
+   FORMULÁRIOS E INPUTS
+   ========================================= */
 .form-group {
     margin-bottom: 15px;
 }
@@ -115,36 +141,6 @@ input:focus, textarea:focus {
     box-shadow: 0 0 5px rgba(205, 133, 63, 0.3);
 }
 
-.btn-salvar {
-    background-color: #28a745;
-    color: var(--white);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.3s;
-}
-
-.btn-salvar:hover {
-    background-color: #218838;
-}
-
-.btn-cancelar {
-    background-color: #6c757d;
-    color: var(--white);
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 4px;
-    margin-left: 10px;
-    display: inline-block;
-    transition: background 0.3s;
-}
-
-.btn-cancelar:hover {
-    background-color: #5a6268;
-}
-
 .search-container {
     background-color: #f4f4f4;
     padding: 15px;
@@ -161,6 +157,85 @@ input:focus, textarea:focus {
     margin-bottom: 0;
 }
 
+/* =========================================
+   TABELAS
+   ========================================= */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+thead {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+td {
+    font-family: 'Arial', sans-serif;
+    font-size: 0.95rem;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* =========================================
+   BOTÕES
+   ========================================= */
+.btn-novo {
+    display: inline-block;
+    background-color: var(--secondary-color);
+    color: var(--white);
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-family: sans-serif;
+    transition: background 0.3s;
+}
+.btn-novo:hover {
+    background-color: var(--hover-color);
+}
+
+.btn-salvar {
+    background-color: #28a745;
+    color: var(--white);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+.btn-salvar:hover {
+    background-color: #218838;
+}
+
+.btn-cancelar {
+    background-color: #6c757d;
+    color: var(--white);
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-left: 10px;
+    display: inline-block;
+    transition: background 0.3s;
+}
+.btn-cancelar:hover {
+    background-color: #5a6268;
+}
+
 .btn-pesquisar {
     background-color: var(--primary-color);
     color: var(--white);
@@ -171,7 +246,6 @@ input:focus, textarea:focus {
     text-decoration: none;
     font-weight: bold;
 }
-
 .btn-pesquisar:hover {
     background-color: var(--hover-color);
 }
@@ -185,7 +259,6 @@ input:focus, textarea:focus {
     border-radius: 4px;
     background-color: white;
 }
-
 .btn-limpar:hover {
     background-color: #e2e6ea;
 }
@@ -200,7 +273,6 @@ input:focus, textarea:focus {
     font-size: 0.85rem;
     margin-right: 5px;
 }
-
 .btn-editar:hover {
     background-color: #138496;
 }
@@ -214,52 +286,13 @@ input:focus, textarea:focus {
     border-radius: 4px;
     font-size: 0.85rem;
 }
-
 .btn-excluir:hover {
     background-color: #c82333;
 }
 
-nav {
-    background-color: var(--primary-color);
-    padding: 15px 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.navbar-content {
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-}
-
-.brand {
-    color: var(--white);
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-.menu {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 20px;
-}
-
-.menu a {
-    color: var(--white);
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1rem;
-    transition: color 0.3s;
-}
-
-.menu a:hover {
-    color: var(--secondary-color);
-}
-
+/* =========================================
+   RODAPÉ (FOOTER)
+   ========================================= */
 footer {
     background-color: #333;
     color: #fff;
@@ -267,8 +300,77 @@ footer {
     padding: 20px;
     margin-top: 50px;
     font-size: 0.9rem;
+
+    flex-shrink: 0;
 }
 
 footer p {
     margin: 5px 0;
+}
+
+/* =========================================
+    CARDS - BIBLIOTECA
+========================================= */
+.library-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.book-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-color: var(--secondary-color);
+}
+
+.book-cover {
+    height: 150px;
+    background-color: #eee;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #ccc;
+}
+
+.book-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin: 0 0 5px 0;
+}
+
+.book-author {
+    color: #666;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.book-info {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.card-actions {
+    margin-top: auto; /* Empurra para o rodapé do card */
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
 }
