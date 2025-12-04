@@ -1,127 +1,162 @@
-
-CREATE TABLE Autor (
-    id SERIAL PRIMARY KEY,
-    NomeAutor VARCHAR(255) NOT NULL,
-    Nacionalidade VARCHAR(100),
-    DataNascimento DATE,
-    DataFalecimento DATE,
-    BiografiaResumida TEXT
-);
-
-
-CREATE TABLE Doador (
-    id SERIAL PRIMARY KEY,
-    Nome VARCHAR(255) NOT NULL,
-    Contato VARCHAR(255),
-    DataCadastro DATE DEFAULT CURRENT_DATE
-);
-
-
-CREATE  TABLE Usuario (
-    id SERIAL PRIMARY KEY,
-    Nome VARCHAR(255) NOT NULL,
-    Email VARCHAR(255) UNIQUE NOT NULL,
-    Senha VARCHAR(255) NOT NULL,
-    Tipo VARCHAR(50) -- 'Administrador', 'Pesquisador', 'Visitante'
-);
+-- 1. Livros publicados após 2010 relacionados à História Afro-Brasileira
+SELECT
+    L.id,
+    L.Titulo,
+    L.Subtitulo,
+    L.AnoPublicacao,
+    A.NomeAutor,
+    L.Editora,
+    L.Chamada
+FROM Livro L
+INNER JOIN Autor A ON L.AutorID = A.id
+WHERE L.AnoPublicacao > 2010
+    AND (L.Titulo LIKE '%negro%'
+        OR L.Titulo LIKE '%afro%'
+        OR L.Titulo LIKE '%racismo%'
+        OR L.Titulo LIKE '%genocídio%'
+        OR L.Subtitulo LIKE '%negro%'
+        OR L.Subtitulo LIKE '%afro%'
+        OR L.Subtitulo LIKE '%racismo%')
+ORDER BY L.AnoPublicacao DESC;
 
 
-CREATE  TABLE Livro (
-    id SERIAL PRIMARY KEY,
-    ISBN BIGINT, -- Usei BIGINT pois ISBN tem 13 digitos e estoura o INT comum
-    Titulo VARCHAR(255) NOT NULL,
-    Subtitulo VARCHAR(255),
-    Edicao VARCHAR(50),
-    LocalPublicacao VARCHAR(255),
-    Editora VARCHAR(255),
-    AnoPublicacao INT,
-    NumPaginas INT,
-    Chamada VARCHAR(100),
-    AutorID INT NOT NULL,
-    DoadorID INT,
-    FOREIGN KEY (AutorID) REFERENCES Autor(id),
-    FOREIGN KEY (DoadorID) REFERENCES Doador(id)
-);
+-- 2. Documentos do acervo histórico doados por um doador específico
+SELECT
+    AH.id,
+    AH.TipoItem,
+    AH.Descricao,
+    AH.AnoItem,
+    AH.CaminhoItem,
+    D.Nome AS NomeDoador,
+    D.Contato
+FROM Acervo_historico AH
+INNER JOIN Doador D ON AH.DoadorID = D.id
+WHERE D.Nome LIKE '%Associação Comunitária Treze de Maio%'
+ORDER BY AH.AnoItem DESC;
 
 
-CREATE  TABLE Acervo_historico (
-    id SERIAL PRIMARY KEY,
-    TipoItem VARCHAR(100),
-    Descricao VARCHAR(255),
-    AnoItem INT,
-    CaminhoItem VARCHAR(255),
-    DoadorID INT,
-    FOREIGN KEY (DoadorID) REFERENCES Doador(id)
-);
+-- 3. Autor com mais livros cadastrados na biblioteca
+SELECT
+    A.id,
+    A.NomeAutor,
+    A.Nacionalidade,
+    COUNT(L.id) AS TotalLivros,
+    GROUP_CONCAT(L.Titulo ORDER BY L.Titulo SEPARATOR ', ') AS Titulos
+FROM Autor A
+INNER JOIN Livro L ON A.id = L.AutorID
+GROUP BY A.id, A.NomeAutor, A.Nacionalidade
+ORDER BY COUNT(L.id) DESC
+LIMIT 1;
 
 
-CREATE  TABLE Emprestimo (
-    id SERIAL PRIMARY KEY,
-    Dataretirada DATE NOT NULL DEFAULT CURRENT_DATE,
-    Datadevolucao DATE,
-    UsuarioID INT NOT NULL,
-    LivroID INT NOT NULL,
-    FOREIGN KEY (UsuarioID) REFERENCES Usuario(id),
-    FOREIGN KEY (LivroID) REFERENCES Livro(id)
-);
+-- 4. Itens do acervo histórico sem digitalização (sem anexo/caminho)
+SELECT
+    AH.id,
+    AH.TipoItem,
+    AH.Descricao,
+    AH.AnoItem,
+    D.Nome AS NomeDoador
+FROM Acervo_historico AH
+LEFT JOIN Doador D ON AH.DoadorID = D.id
+WHERE AH.CaminhoItem IS NULL
+    OR AH.CaminhoItem = ''
+ORDER BY AH.AnoItem;
 
 
+-- 5. Livros mais emprestados (ranking de popularidade)
+SELECT
+    L.id,
+    L.Titulo,
+    A.NomeAutor,
+    L.AnoPublicacao,
+    COUNT(E.id) AS TotalEmprestimos,
+    SUM(CASE WHEN E.Datadevolucao IS NULL THEN 1 ELSE 0 END) AS EmprestimosAtivos
+FROM Livro L
+INNER JOIN Autor A ON L.AutorID = A.id
+LEFT JOIN Emprestimo E ON L.id = E.LivroID
+GROUP BY L.id, L.Titulo, A.NomeAutor, L.AnoPublicacao
+HAVING COUNT(E.id) > 0
+ORDER BY COUNT(E.id) DESC;
 
 
-INSERT INTO Autor (NomeAutor, Nacionalidade, DataNascimento, DataFalecimento, BiografiaResumida) VALUES
-('Carolina Maria de Jesus', 'Brasileira', '1914-03-14', '1977-02-13', 'Escritora famosa por Quarto de Despejo.'),
-('Machado de Assis', 'Brasileira', '1839-06-21', '1908-09-29', 'Fundador da Academia Brasileira de Letras.'),
-('Conceição Evaristo', 'Brasileira', '1946-11-29', NULL, 'Criadora do conceito de escrevivência.'),
-('Djamila Ribeiro', 'Brasileira', '1980-08-01', NULL, 'Filósofa e escritora contemporânea.'),
-('Abdias do Nascimento', 'Brasileira', '1914-03-14', '2011-05-23', 'Ativista, escritor e político.'),
-('Chimamanda Ngozi Adichie', 'Nigeriana', '1977-09-15', NULL, 'Escritora feminista nigeriana.');
+-- 6. Usuários com empréstimos em atraso (mais de 15 dias sem devolução)
+SELECT
+    U.id,
+    U.Nome AS NomeUsuario,
+    U.Email,
+    U.Tipo,
+    L.Titulo AS LivroEmprestado,
+    E.Dataretirada,
+    DATEDIFF(CURRENT_DATE(), E.Dataretirada) AS DiasEmprestado
+FROM Usuario U
+INNER JOIN Emprestimo E ON U.id = E.UsuarioID
+INNER JOIN Livro L ON E.LivroID = L.id
+WHERE E.Datadevolucao IS NULL
+    AND DATEDIFF(CURRENT_DATE(), E.Dataretirada) > 15
+ORDER BY DiasEmprestado DESC;
 
 
-INSERT INTO Doador (Nome, Contato, DataCadastro) VALUES
-('Associação Comunitária Treze de Maio', 'contato@treze.org', '2023-01-10'),
-('Maria da Silva', 'maria.silva@email.com', '2023-02-15'),
-('João Batista', 'joao.batista@email.com', '2023-03-20'),
-('Biblioteca Pública de Santa Maria', 'biblioteca@santamaria.rs.gov.br', '2023-05-05'),
-('Família Oliveira', 'fam.oliveira@email.com', '2023-06-12');
+-- 7. Doadores mais ativos (com mais doações entre livros e acervo histórico)
+SELECT
+    D.id,
+    D.Nome,
+    D.Contato,
+    COUNT(DISTINCT L.id) AS LivrosDoados,
+    COUNT(DISTINCT AH.id) AS ItensAcervoDoados,
+    COUNT(DISTINCT L.id) + COUNT(DISTINCT AH.id) AS TotalDoacoes
+FROM Doador D
+LEFT JOIN Livro L ON D.id = L.DoadorID
+LEFT JOIN Acervo_historico AH ON D.id = AH.DoadorID
+GROUP BY D.id, D.Nome, D.Contato
+HAVING COUNT(DISTINCT L.id) + COUNT(DISTINCT AH.id) > 0
+ORDER BY TotalDoacoes DESC;
 
 
-INSERT INTO Usuario (Nome, Email, Senha, Tipo) VALUES
-('Admin Museu', 'admin@museu13maio.com', 'senha123', 'Administrador'),
-('Estudante UFN', 'aluno@ufn.edu.br', 'ufn2025', 'Pesquisador'),
-('Visitante Geral', 'visitante@gmail.com', 'guest', 'Visitante');
+-- 8. Livros de autores brasileiros por década de publicação
+SELECT
+  
+    (L.AnoPublicacao DIV 10) * 10 AS Decada, 
+    COUNT(L.id) AS TotalLivros,
+  
+    GROUP_CONCAT(DISTINCT A.NomeAutor ORDER BY A.NomeAutor SEPARATOR ', ') AS Autores
+FROM Livro L
+INNER JOIN Autor A ON L.AutorID = A.id
+WHERE A.Nacionalidade = 'Brasileira'
+    AND L.AnoPublicacao IS NOT NULL
+GROUP BY Decada
+ORDER BY Decada DESC;
 
 
-INSERT INTO Livro (ISBN, Titulo, Subtitulo, Edicao, LocalPublicacao, Editora, AnoPublicacao, NumPaginas, Chamada, AutorID, DoadorID) VALUES
-(9788530000, 'Quarto de Despejo', 'Diário de uma favelada', '10ª', 'São Paulo', 'Ática', 1960, 200, 'LIT-BRA-01', 1, 2),
-(9788530001, 'Dom Casmurro', NULL, '1ª', 'Rio de Janeiro', 'Garnier', 1899, 256, 'CLS-BRA-02', 2, 4),
-(9788530002, 'Olhos D’água', NULL, '1ª', 'Rio de Janeiro', 'Pallas', 2014, 116, 'CNT-BRA-03', 3, 1),
-(9788530003, 'Pequeno Manual Antirracista', NULL, '1ª', 'São Paulo', 'Companhia das Letras', 2019, 136, 'SOC-BRA-04', 4, 2),
-(9788530004, 'O Genocídio do Negro Brasileiro', 'Processo de um Racismo Mascarado', '3ª', 'Rio de Janeiro', 'Paz e Terra', 1978, 180, 'HIS-BRA-05', 5, 1),
-(9788530005, 'Hibisco Roxo', NULL, '2ª', 'São Paulo', 'Companhia das Letras', 2011, 320, 'LIT-INT-06', 6, 3),
-(9788530006, 'Memórias Póstumas de Brás Cubas', NULL, 'Edição Especial', 'Rio de Janeiro', 'Nova Fronteira', 2015, 300, 'CLS-BRA-07', 2, 4),
-(9788530007, 'Ponciá Vicêncio', NULL, '1ª', 'Belo Horizonte', 'Mazza Edições', 2003, 140, 'LIT-BRA-08', 3, 5),
-(9788530008, 'Quem tem medo do feminismo negro?', NULL, '1ª', 'São Paulo', 'Companhia das Letras', 2018, 120, 'SOC-BRA-09', 4, 2),
-(9788530009, 'Casa de Alvenaria', 'Diário de uma ex-favelada', '1ª', 'São Paulo', 'Francisco Alves', 1961, 210, 'LIT-BRA-10', 1, 5);
+-- 9. Tipos de itens mais comuns no acervo histórico por período
+SELECT
+    CASE
+        WHEN AH.AnoItem < 1900 THEN 'Século XIX'
+        WHEN AH.AnoItem BETWEEN 1900 AND 1949 THEN 'Primeira Metade Século XX'
+        WHEN AH.AnoItem BETWEEN 1950 AND 1999 THEN 'Segunda Metade Século XX'
+        ELSE 'Século XXI'
+    END AS Periodo,
+    AH.TipoItem,
+    COUNT(*) AS Quantidade
+FROM Acervo_historico AH
+GROUP BY
+    Periodo, 
+    AH.TipoItem
+ORDER BY Periodo, Quantidade DESC;
 
 
-INSERT INTO Acervo_historico (TipoItem, Descricao, AnoItem, CaminhoItem, DoadorID) VALUES
-('Fotografia', 'Foto da fundação do clube social negro', 1950, '/img/foto_fundacao_1950.jpg', 1),
-('Ata', 'Ata de reunião da diretoria de 1960', 1960, '/docs/ata_1960.pdf', 1),
-('Objeto', 'Tambor cerimonial antigo', 1940, '/img/tambor_01.jpg', 5),
-('Carta', 'Carta de alforria digitalizada', 1880, '/docs/carta_alforria_1880.pdf', 4),
-('Jornal', 'Recorte do Jornal A Razão sobre evento', 1975, '/docs/jornal_arazao_1975.pdf', 2),
-('Vestimenta', 'Traje típico de festividade religiosa', 1980, '/img/traje_festividade.jpg', 3),
-('Relato Oral', 'Gravação de entrevista com Dona Maria', 2005, '/audio/relato_dona_maria.mp3', 2),
-('Fotografia', 'Desfile de carnaval de rua em Santa Maria', 1985, '/img/carnaval_sm_1985.jpg', 4),
-('Documento', 'Certidão de nascimento antiga', 1930, '/docs/certidao_1930.pdf', 5),
-('Troféu', 'Troféu do campeonato de futebol do clube', 1990, '/img/trofeu_1990.jpg', 1);
-
-
-INSERT INTO Emprestimo (Dataretirada, Datadevolucao, UsuarioID, LivroID) VALUES
-('2023-11-01', '2023-11-15', 2, 1), 
-('2023-11-05', '2023-11-20', 2, 4), 
-('2023-11-10', NULL, 3, 2),         
-('2023-11-12', NULL, 2, 5);     
-
-
-select * from Usuario;
+-- 10. Relatório: Livros nunca emprestados
+SELECT
+    L.id,
+    L.Titulo,
+    A.NomeAutor,
+    L.AnoPublicacao,
+    L.Editora,
+    D.Nome AS Doador,
+   
+    'Nunca foi emprestado' AS StatusEmprestimo, 
+    'Disponível' AS Disponibilidade 
+FROM Livro L
+INNER JOIN Autor A ON L.AutorID = A.id
+LEFT JOIN Doador D ON L.DoadorID = D.id
+WHERE NOT EXISTS (SELECT 1 FROM Emprestimo E WHERE E.LivroID = L.id)
+ORDER BY L.AnoPublicacao DESC;
