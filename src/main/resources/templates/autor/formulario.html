@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecalho}"></head>
+
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container">
+    <h2>Cadastro de Autor</h2>
+
+    <form th:action="@{/autor/salvar}" th:object="${autor}" method="post">
+
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="form-group">
+            <label for="nome">Nome do Autor:</label>
+            <input type="text" id="nome" th:field="*{nomeAutor}" placeholder="Ex: Machado de Assis" required />
+        </div>
+
+        <div class="form-group">
+            <label for="nacionalidade">Nacionalidade:</label>
+            <input type="text" id="nacionalidade" th:field="*{nacionalidade}" placeholder="Ex: Brasileiro" required />
+        </div>
+
+        <div class="form-group">
+            <label for="nascimento">Data de Nascimento:</label>
+            <input type="date" id="nascimento" th:field="*{dataNascimento}" required />
+        </div>
+
+        <div class="form-group">
+            <label for="falecimento">Data de Falecimento (Opcional):</label>
+            <input type="date" id="falecimento" th:field="*{dataFalecimento}" />
+            <small style="color: #666;">Deixe em branco se o autor ainda estiver vivo.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="biografia">Biografia Resumida:</label>
+            <textarea id="biografia" th:field="*{biografiaResumida}" rows="5" placeholder="Escreva um breve resumo sobre a vida do autor..."></textarea>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <button type="submit" class="btn-salvar">Salvar Autor</button>
+            <a href="/autor" class="btn-cancelar">Cancelar</a>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>

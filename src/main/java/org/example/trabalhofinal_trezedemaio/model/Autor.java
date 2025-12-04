@@ -35,7 +35,7 @@ public class Autor {
 
     public LocalDate getDataFalecimento() {return dataFalecimento;}
 
-    public void setDataFalecimento(LocalDate dataFalecimento) {this.dataFalecimento = this.dataFalecimento;}
+    public void setDataFalecimento(LocalDate dataFalecimento) {this.dataFalecimento = dataFalecimento;}
 
     public String getBiografiaResumida() {return biografiaResumida;}
 
