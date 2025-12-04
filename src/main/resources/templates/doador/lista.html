@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Acervo - Doadores</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<header>
+    <h1>Museu Treze de Maio</h1>
+    <p>Sistema de Gestão de Acervo</p>
+</header>
+
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Lista de Doadores</h2>
+        <a href="/doador/novo" class="btn-novo">+ Novo Doador</a>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nome do Doador</th>
+            <th>Contato</th>
+            <th>Data de Cadastro</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="d : ${doadores}">
+            <td th:text="${d.nome}">Nome Exemplo</td>
+            <td th:text="${d.contato}">email@exemplo.com</td>
+
+            <td th:text="${#temporals.format(d.dataCadastro, 'dd/MM/yyyy')}">01/01/2024</td>
+        </tr>
+
+        <tr th:if="${doadores.empty}">
+            <td colspan="4" style="text-align:center; padding: 20px; color: #777;">
+                Nenhum doador cadastrado ainda.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
