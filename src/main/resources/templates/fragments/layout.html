@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="cabecalho">
+    <meta charset="UTF-8">
+    <title>Museu Treze de Maio</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<nav th:fragment="navbar">
+    <div class="navbar-content">
+        <div class="brand">Museu Treze de Maio</div>
+        <ul class="menu">
+            <li><a href="/">Início</a></li>
+            <li><a href="/doador">Doadores</a></li>
+            <li><a href="/autor">Autores</a></li>
+            <li><a href="/livros">Biblioteca</a></li>
+            <li><a href="/acervo">Acervo Histórico</a></li>
+        </ul>
+    </div>
+</nav>
+</body>
+</html>
