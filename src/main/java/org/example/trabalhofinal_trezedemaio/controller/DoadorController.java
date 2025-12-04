@@ -17,7 +17,7 @@ public class DoadorController {
 
     @GetMapping
     public String listaDoador(Model model) {
-        model.addAttribute("doador", doadorRepository.findAll());
+        model.addAttribute("doadores", doadorRepository.findAll());
         return "doador/lista";
     }
 }
