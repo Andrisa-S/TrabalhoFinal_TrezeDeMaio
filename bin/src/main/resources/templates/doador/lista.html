@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecalho}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h2>Lista de Doadores</h2>
+        <a href="/doador/novo" class="btn-novo">+ Novo Doador</a>
+    </div>
+
+    <form action="/doador" method="get" class="search-container">
+        <input type="text" name="busca" placeholder="Buscar por nome do doador" th:value="${param.busca}">
+
+        <button type="submit" class="btn-pesquisar">Pesquisar</button>
+
+        <a href="/doador" class="btn-limpar" th:if="${param.busca}">Limpar Filtro</a>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Contato</th>
+            <th>Ações</th> </tr>
+        </thead>
+        <tbody>
+        <tr th:each="d : ${doadores}">
+            <td th:text="${d.nome}">Nome</td>
+            <td th:text="${d.contato}">Contato</td>
+
+            <td>
+                <a th:href="@{/doador/editar/{id}(id=${d.id})}" class="btn-editar">Editar</a>
+
+                <a th:href="@{/doador/excluir/{id}(id=${d.id})}"
+                   class="btn-excluir"
+                   onclick="return confirm('Tem certeza que deseja excluir este doador?')">Excluir</a>
+            </td>
+        </tr>
+
+        <tr th:if="${doadores.empty}">
+            <td colspan="4" style="text-align:center; padding: 20px; color: #777;">
+                Nenhum doador encontrado.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

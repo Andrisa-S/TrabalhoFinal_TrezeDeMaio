@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${acervo.id == null ? 'Novo Item' : 'Editar Item'}"></title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 th:text="${acervo.id == null ? 'Novo Item do Acervo' : 'Editar Item do Acervo'}"></h1>
+        
+        <form th:action="@{/acervo-historico/salvar}" th:object="${acervo}" method="post">
+            <input type="hidden" th:field="*{id}">
+            
+            <div class="mb-3">
+                <label for="tipoItem" class="form-label">Tipo do Item *</label>
+                <select th:field="*{tipoItem}" class="form-control" required>
+                    <option value="">Selecione o tipo...</option>
+                    <option th:each="tipo : ${tiposItens}"
+                            th:value="${tipo}"
+                            th:text="${tipo}">
+                    </option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição *</label>
+                <textarea th:field="*{descricao}" class="form-control" rows="3" 
+                          placeholder="Descreva o item em detalhes..." required></textarea>
+                <small class="text-muted">Inclua informações relevantes como conteúdo, estado, origem, etc.</small>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="anoItem" class="form-label">Ano do Item</label>
+                    <input type="number" th:field="*{anoItem}" class="form-control" 
+                           placeholder="Ex: 1950" min="1500" max="2024">
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="caminhoItem" class="form-label">Caminho do Arquivo Digital</label>
+                    <input type="text" th:field="*{caminhoItem}" class="form-control" 
+                           placeholder="Ex: /arquivos/fotos/foto001.jpg">
+                    <small class="text-muted">Deixe em branco se o item ainda não foi digitalizado</small>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="doador" class="form-label">Doador</label>
+                <select th:field="*{doador}" class="form-control">
+                    <option value="">Selecione um doador...</option>
+                    <option th:each="doador : ${listaDoadores}"
+                            th:value="${doador.id}"
+                            th:text="${doador.nome}">
+                    </option>
+                </select>
+                <small class="text-muted">
+                    <a th:href="@{/doador/novo}" target="_blank">Cadastrar novo doador</a>
+                </small>
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <a th:href="@{/acervo-historico}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">
+                    <span th:text="${acervo.id == null ? 'Salvar' : 'Atualizar'}"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

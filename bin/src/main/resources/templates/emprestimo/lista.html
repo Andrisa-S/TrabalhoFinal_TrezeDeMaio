@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecalho}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>Controle de Empréstimos</h2>
+        <a href="/emprestimo/novo" class="btn-novo">+ Novo Empréstimo</a>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Livro</th>
+            <th>Usuário</th>
+            <th>Retirada</th>
+            <th>Prevista</th>
+            <th>Devolução</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="e : ${emprestimos}">
+            <td th:text="${e.livro.titulo}" style="font-weight: bold;">Título</td>
+            <td th:text="${e.usuario.nome}">Nome Usuário</td>
+
+            <td th:text="${#temporals.format(e.dataRetirada, 'dd/MM/yyyy')}">01/01</td>
+            <td th:text="${#temporals.format(e.dataPrevista, 'dd/MM/yyyy')}" style="color: blue;">08/01</td>
+
+            <td>
+                <span th:if="${e.dataDevolucao != null}"
+                      th:text="${#temporals.format(e.dataDevolucao, 'dd/MM/yyyy')}"
+                      style="color: green; font-weight: bold;"></span>
+
+                <span th:if="${e.dataDevolucao == null}"
+                      style="color: #d9534f; font-weight: bold; background: #ffeeee; padding: 2px 6px; border-radius: 4px;">
+                      Pendente
+                </span>
+            </td>
+
+            <td>
+                <a th:if="${e.dataDevolucao == null}"
+                   th:href="@{/emprestimo/devolver/{id}(id=${e.id})}"
+                   class="btn-salvar"
+                   style="padding: 5px 10px; font-size: 0.8rem; text-decoration: none;">
+                    ✅ Devolver
+                </a>
+
+                <span th:if="${e.dataDevolucao != null}" style="color: #ccc;">Concluído</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

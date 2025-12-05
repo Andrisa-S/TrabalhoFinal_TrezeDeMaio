@@ -15,6 +15,7 @@ public class Usuario {
     private String email;
     private String senha;
     private String tipo;
+    private Role role;
 
     public Long getId() {return id;}
 
@@ -35,4 +36,8 @@ public class Usuario {
     public String getTipo() {return tipo;}
 
     public void setTipo(String tipo) {this.tipo = tipo;}
+
+	public Role getRole() {return role;}
+
+	public void setRole(Role role) {this.role = role;}
 }

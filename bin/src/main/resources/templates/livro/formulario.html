@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecalho}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container">
+    <h2>Cadastro de Livro</h2>
+
+    <form th:action="@{/livro/salvar}" th:object="${livro}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="form-group">
+            <label>Título:</label>
+            <input type="text" th:field="*{titulo}" required />
+        </div>
+
+        <div class="form-group">
+            <label>Subtítulo (Opcional):</label>
+            <input type="text" th:field="*{subtitulo}" />
+        </div>
+
+        <div class="form-group">
+            <label>Autor:</label>
+            <select th:field="*{autor}" required>
+                <option value="">Selecione um Autor...</option>
+                <option th:each="a : ${listaAutores}"
+                        th:value="${a.id}"
+                        th:text="${a.nomeAutor}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Doador:</label>
+            <select th:field="*{doador}" required>
+                <option value="">Selecione quem doou...</option>
+                <option th:each="d : ${listaDoadores}"
+                        th:value="${d.id}"
+                        th:text="${d.nome}"></option>
+            </select>
+        </div>
+
+        <div style="display: flex; gap: 15px;">
+            <div class="form-group" style="flex: 1;">
+                <label>ISBN:</label>
+                <input type="text" th:field="*{isbn}" />
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Editora:</label>
+                <input type="text" th:field="*{editora}" />
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Local Pub.:</label>
+                <input type="text" th:field="*{localPublicacao}" placeholder="Ex: São Paulo" />
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 15px;">
+            <div class="form-group" style="flex: 1;">
+                <label>Ano:</label>
+                <input type="number" th:field="*{anoPublicacao}" />
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Edição:</label>
+                <input type="text" th:field="*{edicao}" />
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Páginas:</label>
+                <input type="number" th:field="*{numPaginas}" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Localização (Chamada):</label>
+            <input type="text" th:field="*{chamada}" placeholder="Ex: 869.3 A987d"/>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <button type="submit" class="btn-salvar">Salvar Livro</button>
+            <a href="/livro" class="btn-cancelar">Cancelar</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

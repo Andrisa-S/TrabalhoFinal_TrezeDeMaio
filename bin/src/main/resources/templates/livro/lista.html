@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecalho}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>Biblioteca - Acervo de Livros</h2>
+        <a href="/livro/novo" class="btn-novo">+ Novo Livro</a>
+    </div>
+
+    <form action="/livro" method="get" class="search-container">
+        <input type="text" name="busca" placeholder="Buscar por título, ISBN ou autor..." th:value="${param.busca}">
+        <button type="submit" class="btn-pesquisar">Pesquisar</button>
+        <a href="/livro" class="btn-limpar" th:if="${param.busca}">Limpar</a>
+    </form>
+
+    <div class="library-grid">
+
+        <div class="book-card" th:each="l : ${livros}">
+
+            <div class="book-cover">
+                📖
+            </div>
+
+            <h3 class="book-title" th:text="${l.titulo}">Título do Livro</h3>
+            <div class="book-author" th:text="${l.autor?.nomeAutor} ?: 'Autor Desconhecido'">Nome do Autor</div>
+
+            <div class="book-info">
+                <strong>Editora:</strong> <span th:text="${l.editora}">Editora</span>
+            </div>
+            <div class="book-info">
+                <strong>Ano:</strong> <span th:text="${l.anoPublicacao}">2020</span> |
+                <strong>Chamada:</strong> <span th:text="${l.chamada}">800.1</span>
+            </div>
+
+            <div class="card-actions">
+                <a th:href="@{/livro/editar/{id}(id=${l.id})}" class="btn-editar" style="font-size: 0.9rem;">
+                    ✏️ Editar
+                </a>
+                <a th:href="@{/livro/excluir/{id}(id=${l.id})}"
+                   class="btn-excluir"
+                   style="font-size: 0.9rem;"
+                   onclick="return confirm('Tem certeza que deseja remover este livro do acervo?')">
+                    🗑️ Excluir
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div th:if="${livros.empty}" style="text-align: center; padding: 50px; color: #888;">
+        <h3>Nenhum livro encontrado 😢</h3>
+        <p>Tente outra busca ou cadastre um novo livro.</p>
+    </div>
+
+</div>
+
+</body>
+</html>

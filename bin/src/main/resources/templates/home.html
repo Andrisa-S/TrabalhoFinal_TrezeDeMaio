@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecalho}">
+</head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="hero-section">
+    <div class="container" style="text-align: center; padding: 40px 20px;">
+        <h1 style="color: var(--primary-color); font-size: 2.5rem; margin-bottom: 10px;">
+            Museu Treze de Maio
+        </h1>
+        <p style="font-size: 1.2rem; color: #555; max-width: 800px; margin: 0 auto;">
+            Sistema Integrado de Gestão de Acervo e Biblioteca. <br>
+            Preservando e valorizando a cultura afro-brasileira em Santa Maria.
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="dashboard-grid">
+
+        <a href="/autor" class="card">
+            <div class="card-icon">✍️</div>
+            <h3>Gerenciar Autores</h3>
+            <p>Cadastre e consulte os autores das obras literárias.</p>
+        </a>
+
+        <a href="/doador" class="card">
+            <div class="card-icon">🤝</div>
+            <h3>Gerenciar Doadores</h3>
+            <p>Controle quem contribui com o acervo do museu.</p>
+        </a>
+
+        <a href="/usuario" class="card">
+            <div class="card-icon">👥</div>
+            <h3>Gerenciar Usuários</h3>
+            <p>Cadastro de leitores, pesquisadores e visitantes.</p>
+        </a>
+
+        <a href="/livro" class="card">
+            <div class="card-icon">📚</div>
+            <h3>Biblioteca</h3>
+            <p>Catálogo de livros e revistas do acervo.</p>
+        </a>
+
+        <a href="/emprestimo" class="card">
+            <div class="card-icon">📅</div>
+            <h3>Empréstimos</h3>
+            <p>Controle de retiradas e devoluções de livros.</p>
+        </a>
+
+        <a href="/acervo" class="card disabled">
+            <div class="card-icon">🏛️</div>
+            <h3>Acervo Histórico</h3>
+            <p>Fotos, atas e documentos antigos. <br> (Em desenvolvimento)</p>
+        </a>
+
+    </div>
+</div>
+
+<style>
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+
+    .card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 30px;
+        text-align: center;
+        text-decoration: none;
+        color: var(--text-color);
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border-color: var(--secondary-color);
+    }
+
+    .card h3 {
+        margin: 15px 0 10px 0;
+        color: var(--primary-color);
+    }
+
+    .card p {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .card-icon {
+        font-size: 3rem;
+        margin-bottom: 10px;
+    }
+
+    /* Estilo para módulos ainda não prontos */
+    .card.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background-color: #f9f9f9;
+        pointer-events: none; /* Impede o clique */
+    }
+    .card.disabled:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: #ddd;
+    }
+</style>
+
+</body>
+</html>
