@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/acervo-historico")
+@RequestMapping("/acervo")
 public class AcervoHistoricoController {
 	@Autowired
     private AcervoHistoricoRepository acervoHistoricoRepository;
@@ -31,7 +31,7 @@ public class AcervoHistoricoController {
         }
         
         model.addAttribute("tiposItens", new String[]{"Fotografia", "Carta", "Jornal", "Ata", "Objeto", "Documento", "Áudio", "Vídeo"});
-        return "acervo-historico/lista";
+        return "acervo/lista";
     }
     
     @GetMapping("/novo")
@@ -39,13 +39,13 @@ public class AcervoHistoricoController {
         model.addAttribute("acervo", new AcervoHistorico());
         model.addAttribute("listaDoadores", doadorRepository.findAll());
         model.addAttribute("tiposItens", new String[]{"Fotografia", "Carta", "Jornal", "Ata", "Objeto", "Documento", "Áudio", "Vídeo"});
-        return "acervo-historico/formulario";
+        return "acervo/formulario";
     }
     
     @PostMapping("/salvar")
     public String salvar(AcervoHistorico acervoHistorico) {
         acervoHistoricoRepository.save(acervoHistorico);
-        return "redirect:/acervo-historico";
+        return "redirect:/acervo";
     }
     
     @GetMapping("/editar/{id}")
@@ -56,15 +56,15 @@ public class AcervoHistoricoController {
             model.addAttribute("acervo", acervo.get());
             model.addAttribute("listaDoadores", doadorRepository.findAll());
             model.addAttribute("tiposItens", new String[]{"Fotografia", "Carta", "Jornal", "Ata", "Objeto", "Documento", "Áudio", "Vídeo"});
-            return "acervo-historico/formulario";
+            return "acervo/formulario";
         }
-        return "redirect:/acervo-historico";
+        return "redirect:/acervo";
     }
     
     @GetMapping("/excluir/{id}")
     public String excluir(@PathVariable("id") Long id) {
         acervoHistoricoRepository.deleteById(id);
-        return "redirect:/acervo-historico";
+        return "redirect:/acervo";
     }
     
     @GetMapping("/detalhes/{id}")
@@ -73,15 +73,15 @@ public class AcervoHistoricoController {
         
         if (acervo.isPresent()) {
             model.addAttribute("acervo", acervo.get());
-            return "acervo-historico/detalhes";
+            return "acervo/detalhes";
         }
-        return "redirect:/acervo-historico";
+        return "redirect:/acervo";
     }
     
     @GetMapping("/por-doador")
     public String buscarPorDoador(@RequestParam("doadorId") Long doadorId, Model model) {
         model.addAttribute("itens", acervoHistoricoRepository.findById(doadorId));
         model.addAttribute("tiposItens", new String[]{"Fotografia", "Carta", "Jornal", "Ata", "Objeto", "Documento", "Áudio", "Vídeo"});
-        return "acervo-historico/lista";
+        return "acervo/lista";
     }
 }

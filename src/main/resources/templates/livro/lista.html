@@ -7,7 +7,14 @@
 <div class="container">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h2>Biblioteca - Acervo de Livros</h2>
-        <a href="/livro/novo" class="btn-novo">+ Novo Livro</a>
+        <div style="display: flex; gap: 10px;">
+            <a th:href="@{/emprestimo/novo}" class="btn-novo" style="background-color: #007bff;">
+                + Novo Empréstimo
+            </a>
+            <a th:href="@{/livro/novo}" class="btn-novo">
+                + Novo Livro
+            </a>
+        </div>
     </div>
 
     <form action="/livro" method="get" class="search-container">

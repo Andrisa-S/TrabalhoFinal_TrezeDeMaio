@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecalho}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>Acervo Histórico</h2>
+        <a href="/acervo/novo" class="btn-novo">+ Novo Item</a>
+    </div>
+
+    <form action="/acervo" method="get" class="search-container">
+
+        <input type="text" name="busca" placeholder="Buscar por descrição..."
+               th:value="${param.busca}" style="flex: 2;">
+
+        <select name="tipo" style="flex: 1; height: 42px; padding: 5px;">
+            <option value="">Todos os Tipos</option>
+            <option th:each="t : ${tiposItens}"
+                    th:value="${t}"
+                    th:text="${t}"
+                    th:selected="${param.tipo != null and param.tipo[0] == t}">
+            </option>
+        </select>
+
+        <button type="submit" class="btn-pesquisar">Filtrar</button>
+
+        <a href="/acervo" class="btn-limpar" th:if="${param.busca != null or param.tipo != null}">Limpar</a>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Tipo</th>
+            <th>Descrição Resumida</th>
+            <th>Ano</th>
+            <th>Doador</th>
+            <th style="width: 250px;">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${itens}">
+
+            <td>
+                <span style="font-weight: bold; color: var(--primary-color);" th:text="${item.tipoItem}">Tipo</span>
+            </td>
+
+            <td th:title="${item.descricao}">
+                <span th:text="${item.descricao != null and item.descricao.length() > 50 ?
+                               item.descricao.substring(0, 50) + '...' :
+                               item.descricao}">
+                      Descrição...
+                </span>
+            </td>
+
+            <td th:text="${item.anoItem}">1900</td>
+
+            <td th:text="${item.doador?.nome} ?: '-'">Nome Doador</td>
+
+            <td>
+                <a th:href="@{/acervo/detalhes/{id}(id=${item.id})}"
+                   class="btn-editar"
+                   style="background-color: #6f42c1; margin-right: 5px;">
+                    👁️ Ver
+                </a>
+
+                <a th:href="@{/acervo/editar/{id}(id=${item.id})}" class="btn-editar">Editar</a>
+
+                <a th:href="@{/acervo/excluir/{id}(id=${item.id})}"
+                   class="btn-excluir"
+                   onclick="return confirm('Tem certeza que deseja excluir este item histórico?')">Excluir</a>
+            </td>
+        </tr>
+
+        <tr th:if="${itens.empty}">
+            <td colspan="5" style="text-align:center; padding: 30px; color: #777;">
+                <div style="font-size: 2rem; margin-bottom: 10px;">📭</div>
+                Nenhum item histórico encontrado com esses filtros.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 10px; font-size: 0.9rem; color: #666; text-align: right;">
+        Total de itens listados: <strong th:text="${itens.size()}">0</strong>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecalho}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container">
+
+    <h2 th:text="${acervo.id == null ? 'Novo Item do Acervo' : 'Editar Item do Acervo'}"></h2>
+
+    <form th:action="@{/acervo/salvar}" th:object="${acervo}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <div class="form-group">
+            <label>Tipo do Item *</label>
+            <select th:field="*{tipoItem}" required>
+                <option value="">Selecione o tipo...</option>
+                <option th:each="tipo : ${tiposItens}"
+                        th:value="${tipo}"
+                        th:text="${tipo}">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Descrição Detalhada *</label>
+            <textarea th:field="*{descricao}" rows="4"
+                      placeholder="Descreva o conteúdo, estado de conservação, origem..." required></textarea>
+            <small style="color: #666; font-size: 0.85rem;">Inclua informações relevantes históricas.</small>
+        </div>
+
+        <div style="display: flex; gap: 15px;">
+            <div class="form-group" style="flex: 1;">
+                <label>Ano do Item:</label>
+                <input type="number" th:field="*{anoItem}" placeholder="Ex: 1950" min="1500" max="2030">
+            </div>
+
+            <div class="form-group" style="flex: 2;"> <label>Caminho do Arquivo Digital:</label>
+                <input type="text" th:field="*{caminhoItem}" placeholder="Ex: C:/arquivos/fotos/foto001.jpg">
+                <small style="color: #666; font-size: 0.85rem;">Deixe em branco se não foi digitalizado.</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Doador:</label>
+            <select th:field="*{doador}">
+                <option value="">Selecione um doador...</option>
+                <option th:each="d : ${listaDoadores}"
+                        th:value="${d.id}"
+                        th:text="${d.nome}">
+                </option>
+            </select>
+
+            <div style="margin-top: 5px;">
+                <a th:href="@{/doador/novo}" target="_blank"
+                   style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem;">
+                    + Cadastrar novo doador (abre em nova aba)
+                </a>
+            </div>
+        </div>
+
+        <div style="margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px;">
+            <button type="submit" class="btn-salvar">
+                <span th:text="${acervo.id == null ? 'Salvar Item' : 'Atualizar Item'}"></span>
+            </button>
+            <a href="/acervo" class="btn-cancelar">Cancelar</a>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>
