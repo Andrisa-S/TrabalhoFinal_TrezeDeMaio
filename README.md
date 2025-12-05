@@ -30,12 +30,6 @@ O sistema permite o gerenciamento de dois acervos distintos:
 - ✅ **Controle de digitalização** dos itens
 - ✅ **Associação com doadores** e autores
 
-### 🔐 Sistema de Segurança
-- ✅ **Criação de contas** com diferentes níveis de acesso
-- ✅ **Autenticação segura** com Spring Security
-- ✅ **Autorização por perfil** (ADMIN, FUNCIONARIO, VISITANTE)
-- ✅ **Sessões protegidas** e controle de acesso
-
 ### 📈 Relatórios e Consultas
 - ✅ **Consultas complexas** SQL com JOIN, GROUP BY, subconsultas
 - ✅ **Relatórios estatísticos** do acervo
@@ -46,63 +40,10 @@ O sistema permite o gerenciamento de dois acervos distintos:
 
 ### Tecnologias Utilizadas
 - **Backend**: Java 17, Spring Boot 3.1, Spring Data JPA, Spring Security
-- **Frontend**: Thymeleaf, Bootstrap 5, JavaScript
+- **Frontend**: Thymeleaf, Bootstrap 5
 - **Banco de Dados**: MySQL 8.0 (compatível com SQL Server)
 - **Build Tool**: Maven 3.9+
 - **Controle de Versão**: Git/GitHub
-
-### Estrutura do Projeto
-```
-src/main/java/org/example/trabalhofinal_trezedemaio/
-├── controller/           # Controladores MVC
-│   ├── LivroController.java
-│   ├── AcervoHistoricoController.java
-│   ├── UsuarioController.java
-│   └── AutenticacaoController.java
-├── model/               # Entidades JPA
-│   ├── Livro.java
-│   ├── AcervoHistorico.java
-│   ├── Usuario.java
-│   ├── Autor.java
-│   └── Doador.java
-├── repository/          # Interfaces de acesso a dados
-│   ├── LivroRepository.java
-│   ├── AcervoHistoricoRepository.java
-│   ├── UsuarioRepository.java
-│   └── ...
-├── service/             # Lógica de negócio
-│   ├── AcervoService.java
-│   ├── AutenticacaoService.java
-│   └── UsuarioService.java
-├── security/            # Configurações de segurança
-│   ├── SecurityConfig.java
-│   ├── UserDetailsServiceImpl.java
-│   └── WebMvcConfig.java
-└── config/              # Configurações adicionais
-    └── AppConfig.java
-
-src/main/resources/
-├── templates/           # Views Thymeleaf
-│   ├── livro/
-│   ├── acervo-historico/
-│   ├── usuario/
-│   └── fragments/
-├── static/              # Assets estáticos
-│   ├── css/
-│   ├── js/
-│   └── images/
-└── application.properties
-
-sql/                     # Scripts SQL
-├── schema.sql          # Estrutura do banco
-├── data.sql            # Dados iniciais
-└── consultas.sql       # Consultas complexas
-
-docs/                    # Documentação
-├── diagramas/          # DER, casos de uso
-├── requisitos/         # Documentação de requisitos
-└── relatorios/         # Relatórios do projeto
-```
 
 ## 🚀 Como Executar o Projeto
 
@@ -120,15 +61,7 @@ docs/                    # Documentação
    cd TrabalhoFinal_TrezeDeMaio
    ```
 
-2. **Configure o banco de dados**
-   ```sql
-   CREATE DATABASE museu_trezedemaio;
-   CREATE USER 'museu_user'@'localhost' IDENTIFIED BY 'senha123';
-   GRANT ALL PRIVILEGES ON museu_trezedemaio.* TO 'museu_user'@'localhost';
-   FLUSH PRIVILEGES;
-   ```
-
-3. **Configure o arquivo application.properties**
+2. **Configure o arquivo application.properties**
    ```properties
    # src/main/resources/application.properties
    spring.datasource.url=jdbc:mysql://localhost:3306/museu_trezedemaio
@@ -139,17 +72,14 @@ docs/                    # Documentação
    spring.jpa.show-sql=true
    ```
 
-4. **Compile e execute o projeto**
+3. **Compile e execute o projeto**
    ```bash
    mvn clean install
    mvn spring-boot:run
    ```
 
-5. **Acesse a aplicação**
+4. **Acesse a aplicação**
    - URL: http://localhost:8080
-   - Usuário admin: `admin@museu.org` / `senha123`
-   - Usuário funcionário: `funcionario@museu.org` / `senha123`
-   - Usuário visitante: `visitante@email.com` / `senha123`
 
 ## 📊 Scripts SQL
 
@@ -240,58 +170,12 @@ LIMIT 5;
 - **Andrisa Santos**: Desenvolvimento das views e interface
 - **Arthur Spironello**: Consultas SQL e relatórios
 
-### Padrões de Código
-- Nomenclatura em português para domínio
-- Comentários Javadoc em classes e métodos públicos
-- Seguir convenções do Spring Boot
-- Commits semânticos (feat:, fix:, docs:, etc.)
-
-## 📝 Licença
-
-Este projeto foi desenvolvido para fins acadêmicos como parte da disciplina de Implementação de Banco de Dados e Laboratório de Desenvolvimento de Software.
-
-## 🔗 Links Úteis
-
-- **Repositório GitHub**: https://github.com/Andrisa-S/TrabalhoFinal_TrezeDeMaio
-- **Documentação Spring Boot**: https://spring.io/projects/spring-boot
-- **Documentação Thymeleaf**: https://www.thymeleaf.org/doc/tutorials/3.1/usingthymeleaf.html
-- **MySQL Documentation**: https://dev.mysql.com/doc/
-
-## 🆘 Suporte
-
-Para reportar bugs ou solicitar novas funcionalidades:
-1. Verifique os [Issues](https://github.com/Andrisa-S/TrabalhoFinal_TrezeDeMaio/issues) existentes
-2. Crie um novo issue com:
-   - Descrição detalhada do problema
-   - Passos para reproduzir
-   - Screenshots (se aplicável)
-   - Ambiente (SO, versão do Java, etc.)
-
 ---
 
 <div align="center">
   <p><em>Desenvolvido com ❤️ para preservar a história e cultura afro-brasileira</em></p>
   <p>Museu Treze de Maio - Santa Maria/RS</p>
 </div>
-
-## 🎯 Próximas Melhorias
-
-- [ ] API REST para integração com outros sistemas
-- [ ] Sistema de backup automático do banco
-- [ ] Relatórios estatísticos avançados
-- [ ] Sistema de reserva online para livros
-- [ ] Galeria virtual 3D para objetos do acervo
-- [ ] Integração com redes sociais
-- [ ] Versão mobile do sistema
-
-## 📊 Métricas do Projeto
-
-- ✅ **100%** Funcionalidades básicas implementadas
-- ✅ **15+** Entidades do modelo de dados
-- ✅ **20+** Consultas SQL complexas
-- ✅ **10+** Telas do sistema
-- ✅ **3** Níveis de acesso implementados
-- ✅ **100+** Linhas de documentação
 
 ---
 
