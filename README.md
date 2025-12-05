@@ -234,10 +234,10 @@ LIMIT 5;
 ## 👥 Contribuição
 
 ### Equipe de Desenvolvimento
-- **Integrante 1**: Modelagem de banco de dados e entidades JPA
-- **Integrante 2**: Sistema de autenticação e controle de acesso
-- **Integrante 3**: Desenvolvimento das views e interface
-- **Integrante 4**: Consultas SQL e relatórios
+- **Matheus Machado Faccin**: Modelagem de banco de dados e entidades JPA
+- **Gustavo Gomes Sefrin**: Sistema de autenticação e controle de acesso
+- **Andrisa Santos**: Desenvolvimento das views e interface
+- **Arthur Spironello**: Consultas SQL e relatórios
 
 ### Padrões de Código
 - Nomenclatura em português para domínio
@@ -248,8 +248,6 @@ LIMIT 5;
 ## 📝 Licença
 
 Este projeto foi desenvolvido para fins acadêmicos como parte da disciplina de Implementação de Banco de Dados e Laboratório de Desenvolvimento de Software.
-
-© 2024 Equipe Treze de Maio - Universidade Federal de Santa Maria
 
 ## 🔗 Links Úteis
 
