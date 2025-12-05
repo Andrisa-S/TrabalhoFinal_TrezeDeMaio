@@ -165,7 +165,7 @@ LIMIT 5;
 
 ### Equipe de Desenvolvimento
 - **Matheus Machado Faccin**: Modelagem de banco de dados e entidades JPA
-- **Gustavo Gomes Sefrin**: Sistema de autenticação e controle de acesso
+- **Gustavo Gomes Sefrin**: Coordenação de versionamento de código
 - **Alisson Lamarque**: Desenvolvimento e gerenciamento do sistema
 - **Andrisa Santos**: Desenvolvimento das views e interface
 - **Arthur Spironello**: Consultas SQL e relatórios
