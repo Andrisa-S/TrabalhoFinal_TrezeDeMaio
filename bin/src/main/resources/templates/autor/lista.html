@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecalho}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h2>Lista de Autores</h2>
+        <a href="/autor/novo" class="btn-novo">+ Novo Autor</a>
+    </div>
+
+    <form action="/autor" method="get" class="search-container">
+        <input type="text" name="busca" placeholder="Buscar por nome do autor" th:value="${param.busca}">
+
+        <button type="submit" class="btn-pesquisar">Pesquisar</button>
+
+        <a href="/autor" class="btn-limpar" th:if="${param.busca}">Limpar Filtro</a>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Nacionalidade</th>
+            <th>Nascimento</th>
+            <th>Falecimento</th>
+            <th>Ações</th> </tr>
+        </thead>
+        <tbody>
+        <tr th:each="a : ${autores}">
+            <td th:text="${a.nomeAutor}">Nome</td>
+            <td th:text="${a.nacionalidade}">Contato</td>
+            <td th:text="${#temporals.format(a.dataNascimento, 'dd/MM/yyyy')}">Nascimento</td>
+            <td th:text="${a.dataFalecimento != null} ? ${#temporals.format(a.dataFalecimento, 'dd/MM/yyyy')} : '-'">Falecimento</td>
+
+            <td>
+                <a th:href="@{/autor/editar/{id}(id=${a.id})}" class="btn-editar">Editar</a>
+
+                <a th:href="@{/autor/excluir/{id}(id=${a.id})}"
+                   class="btn-excluir"
+                   onclick="return confirm('Tem certeza que deseja excluir este autor?')">Excluir</a>
+            </td>
+        </tr>
+
+        <tr th:if="${autores.empty}">
+            <td colspan="4" style="text-align:center; padding: 20px; color: #777;">
+                Nenhum autor encontrado.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

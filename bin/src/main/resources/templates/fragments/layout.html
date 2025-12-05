@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="cabecalho">
+    <meta charset="UTF-8">
+    <title>Museu Treze de Maio</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<nav th:fragment="navbar">
+    <div class="navbar-content">
+        <div class="brand">
+            <a href="/">Museu Treze de Maio</a>
+        </div>
+
+        <ul class="menu">
+            <li><a href="/doador">Doadores</a></li>
+            <li><a href="/autor">Autores</a></li>
+            <li><a href="/livro">Biblioteca</a></li>
+            <li><a href="/construcao">Acervo Histórico</a></li>
+        </ul>
+
+        <div class="user-profile">
+            <a href="/login" title="Acesso Administrativo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </a>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

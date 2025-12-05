@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${acervo.tipoItem} + ' - Detalhes'"></title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title">Detalhes do Item Histórico</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Informações Básicas</h5>
+                        <table class="table table-borderless">
+                            <tr>
+                                <th>ID:</th>
+                                <td th:text="${acervo.id}"></td>
+                            </tr>
+                            <tr>
+                                <th>Tipo:</th>
+                                <td th:text="${acervo.tipoItem}"></td>
+                            </tr>
+                            <tr>
+                                <th>Ano:</th>
+                                <td th:text="${acervo.anoItem}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Informações Adicionais</h5>
+                        <table class="table table-borderless">
+                            <tr>
+                                <th>Doador:</th>
+                                <td>
+                                    <span th:if="${acervo.doador != null}">
+                                        <span th:text="${acervo.doador.nome}"></span>
+                                        <br>
+                                        <small class="text-muted" th:text="${acervo.doador.email}"></small>
+                                    </span>
+                                    <span th:if="${acervo.doador == null}">Não informado</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Digitalizado:</th>
+                                <td>
+                                    <span th:if="${acervo.caminhoItem != null and acervo.caminhoItem != ''}">
+                                        <span class="badge bg-success">Sim</span>
+                                        <br>
+                                        <small th:text="${acervo.caminhoItem}"></small>
+                                    </span>
+                                    <span th:if="${acervo.caminhoItem == null or acervo.caminhoItem == ''}">
+                                        <span class="badge bg-warning">Não</span>
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>Descrição Completa</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <p th:text="${acervo.descricao}"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Se tiver arquivo digital, mostrar preview -->
+                <div th:if="${acervo.caminhoItem != null and acervo.caminhoItem != ''}" class="mt-4">
+                    <h5>Arquivo Digital</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <p><strong>Caminho:</strong> <span th:text="${acervo.caminhoItem}"></span></p>
+                            
+                            <!-- Preview para imagens -->
+                            <div th:if="${acervo.caminhoItem.endsWith('.jpg') or 
+                                        acervo.caminhoItem.endsWith('.jpeg') or
+                                        acervo.caminhoItem.endsWith('.png') or
+                                        acervo.caminhoItem.endsWith('.gif')}">
+                                <img th:src="'file://' + ${acervo.caminhoItem}" 
+                                     class="img-fluid rounded" 
+                                     style="max-height: 400px;"
+                                     alt="Preview do arquivo"
+                                     onerror="this.style.display='none'">
+                            </div>
+                            
+                            <!-- Link para PDF -->
+                            <div th:if="${acervo.caminhoItem.endsWith('.pdf')}">
+                                <a th:href="'file://' + ${acervo.caminhoItem}" 
+                                   target="_blank" 
+                                   class="btn btn-outline-primary">
+                                    Abrir PDF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <a th:href="@{/acervo-historico}" class="btn btn-secondary">
+                        Voltar para Lista
+                    </a>
+                    <div>
+                        <a th:href="@{/acervo-historico/editar/{id}(id=${acervo.id})}" 
+                           class="btn btn-warning">Editar</a>
+                        <a th:href="@{/acervo-historico/excluir/{id}(id=${acervo.id})}" 
+                           class="btn btn-danger"
+                           onclick="return confirm('Tem certeza que deseja excluir este item?')">
+                            Excluir
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
